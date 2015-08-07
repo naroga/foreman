@@ -1,6 +1,10 @@
 parameters:
 
+    foreman.processor:
+        interval: 0.5
+        port: %foreman.processor.port%
+
 services:
     foreman.processor:
         class: AppBundle\Processor\Processor
-        arguments: []
+        arguments: [%foreman.processor%]
