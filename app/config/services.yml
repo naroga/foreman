@@ -8,6 +8,8 @@ parameters:
         ###################################################################
 
         interval: 0.5
+        workers: 5
+        timeout: 30
 
         ###################################################################
         # Do not change the configuration below this point.               #

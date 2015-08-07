@@ -38,9 +38,28 @@ checking if there are new queued processes or if the currently dispatched proces
 
 Do *not* set this value to 0 (zero).
 
-**Type**: integer
+**Type**: float
 
 **Default**: 0.5
+
+workers
+-------
+
+The amount of parallel workers to spawn. The greater the number, the faster your queue will be processed, but the
+most resources (CPU, RAM and possibly bandwidth, depending on the process type) will be used.
+
+**Type**: integer
+
+**Default**: 5
+
+timeout
+-------
+
+Time, in seconds, to wait before declaring a process timed out.
+
+**Type**: integer
+
+**Default:** 30
 
 ---
 
