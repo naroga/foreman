@@ -64,9 +64,9 @@ class StartCommand extends ContainerAwareCommand
             }
 
             if ($accessor->ping()) {
-                //WTF, I don't know why but subtracting 2 is needed to display the correct result.
+                $status = $accessor->status();
                 $output->writeln(
-                    '<info>The server has been started successfully with PID ' . ($process->getPid() - 2) . '</info>'
+                    '<info>The server has been started successfully with PID ' . $status['pid'] . '</info>'
                 );
             } else {
                 $output->writeln('<error>The server could not be started at this moment.</error>');
