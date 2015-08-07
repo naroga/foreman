@@ -27,7 +27,14 @@ class StopCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $response = $this->getContainer()->get('foreman.accessor')->stop();
+        $accessor = $this->getContainer()->get('foreman.accessor');
+
+        if (!$accessor->ping()) {
+            $output->writeln('<error>The server is not reachable.</error>');
+            return;
+        }
+
+        $response = $accessor->stop();
         if ($response['success']) {
             $output->writeln('A <error>SIGTERM</error> has been sent to the Foreman Processor.');
         }
