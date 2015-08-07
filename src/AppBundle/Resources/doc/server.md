@@ -16,8 +16,7 @@ The server should be started from the command line, from the Symfony Console app
 The process should now be up and running. It's that easy.
 
 By default, your server listens on `127.0.0.1:3440`, so you might want to unblock that port in your firewall. If you
-wish to change these parameters, check the [configuration reference](configuration.md).
-
+wish to change these parameters, check the [configuration reference](configuration.md#host-and-port).
 There are two very useful additional options for your server, as described below.
 
 **1. Daemon mode**
