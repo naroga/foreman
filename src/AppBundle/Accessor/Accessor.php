@@ -3,6 +3,7 @@
 namespace AppBundle\Accessor;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use JMS\Serializer\Serializer;
 use Psr\Http\Message\ResponseInterface;
 
@@ -44,5 +45,21 @@ class Accessor
             'array',
             'json'
         );
+    }
+
+    /**
+     * Pings the server.
+     * Basically serves as a 'is the server up?' test.
+     *
+     * @return bool
+     */
+    public function ping()
+    {
+        try {
+            $response = $this->client->get('/ping');
+        } catch (GuzzleException $e) {
+            return false;
+        }
+        return true;
     }
 }

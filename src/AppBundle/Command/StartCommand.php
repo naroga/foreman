@@ -43,6 +43,24 @@ class StartCommand extends ContainerAwareCommand
             );
             $process->setTimeout(0);
             $process->start();
+
+            if ($this->getContainer()->get('foreman.accessor')->ping()) {
+                //WTF, I don't know why but subtracting 2 is needed to display the correct result.
+                $output->writeln(
+                    '<info>The server has been started successfully with PID ' . ($process->getPid() - 2) . '</info>'
+                );
+            } else {
+                $output->writeln('<error>The server could not be started at this moment.</error>');
+                $output->writeln(
+                    'Please check if the server port (' . $this->getContainer()->getParameter('foreman.processor.port')
+                    . ') is available.'
+                );
+                $output->writeln(
+                    'If you have closed the server recently, the connection may not have released. Try again ' .
+                    'in a few seconds.'
+                );
+            }
+
         } else {
             $this->getContainer()->get('foreman.processor')->start($output, $input->getOption('verbose'));
         }

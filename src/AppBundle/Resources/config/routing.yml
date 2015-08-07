@@ -1,3 +1,7 @@
 foreman.processor.signal.stop:
     path:     /stop
     defaults: { _controller: AppBundle:Processor:stop, _format: json }
+
+foreman.processor.signal.ping:
+    path:     /ping
+    defaults: { _controller: AppBundle:Processor:ping, _format: json }

@@ -41,6 +41,9 @@ class Processor
     /** @var bool */
     protected $sigterm = false;
 
+    /** @var Server */
+    protected $socket;
+
     /**
      * Class constructor
      *
@@ -69,12 +72,12 @@ class Processor
         $this->verbose = $verbose;
 
         $this->loop = Factory::create();
-        $socket = new Server($this->loop);
+        $this->socket = new Server($this->loop);
 
-        $http = new \React\Http\Server($socket);
+        $http = new \React\Http\Server($this->socket);
         $http->on('request', [$this, 'manageRequest']);
 
-        $socket->listen($this->port, $this->host);
+        $this->socket->listen($this->port, $this->host);
 
         $this->loop->addPeriodicTimer($this->interval, [$this, 'manageQueue']);
         $this->loop->run();
@@ -119,6 +122,7 @@ class Processor
     {
         if ($this->sigterm) {
             $this->loop->stop();
+            $this->socket->shutdown();
             $this->output->writeln('The Foreman Processor has been stopped.');
         }
 

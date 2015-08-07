@@ -1,7 +1,19 @@
 parameters:
 
     foreman.processor:
+
+        ###################################################################
+        # You can tweak the values below.                                 #
+        # See: https://github.com/naroga/foreman for a complete reference #
+        ###################################################################
+
         interval: 0.5
+
+        ###################################################################
+        # Do not change the configuration below this point.               #
+        # These are references to the values at app/config/parameters.yml #
+        ###################################################################
+
         host: %foreman.processor.host%
         port: %foreman.processor.port%
 
