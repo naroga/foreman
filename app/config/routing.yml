@@ -1,0 +1,7 @@
+foreman.processor:
+    resource: "@AppBundle/Resources/config/routing.yml"
+    #host: "%foreman.processor.host%:%foreman.processor.port%"
+
+app:
+    resource: "@AppBundle/Controller"
+    type: annotation

@@ -15,7 +15,10 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
+    foreman.processor.protocol: http
+    foreman.processor.host: 127.0.0.1
     foreman.processor.port: 3440
+
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt

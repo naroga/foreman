@@ -44,7 +44,7 @@ class StartCommand extends ContainerAwareCommand
             $process->setTimeout(0);
             $process->start();
         } else {
-            $this->getContainer()->get('foreman.processor')->start($output);
+            $this->getContainer()->get('foreman.processor')->start($output, $input->getOption('verbose'));
         }
     }
 }

@@ -2,9 +2,17 @@ parameters:
 
     foreman.processor:
         interval: 0.5
+        host: %foreman.processor.host%
         port: %foreman.processor.port%
 
 services:
+
     foreman.processor:
         class: AppBundle\Processor\Processor
-        arguments: [%foreman.processor%]
+        arguments: [%foreman.processor%, @kernel]
+
+    foreman.accessor:
+        class: AppBundle\Accessor\Accessor
+        arguments:
+            - "%foreman.processor.protocol%://%foreman.processor.host%:%foreman.processor.port%"
+            - @jms_serializer

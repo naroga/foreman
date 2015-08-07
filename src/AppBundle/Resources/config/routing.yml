@@ -1,0 +1,3 @@
+foreman.processor.signal.stop:
+    path:     /stop
+    defaults: { _controller: AppBundle:Processor:stop, _format: json }
