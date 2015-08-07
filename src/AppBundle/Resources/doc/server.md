@@ -1,9 +1,10 @@
 The Foreman:Processor Server
 ============================
 
-This is probably the most important part of your application. The Foreman:Processor server is the application
+This is probably the most important part of your application. The Foreman:Processor server is
 responsible for managing your workers, starting queued processes, killing timed out processes and 
-notifying your application that a specific process has finished.
+notifying your application that a specific process has finished. If it's not running, you won't be
+able to add processes to the queue.
 
 Starting the server
 -------------------
@@ -51,10 +52,10 @@ to do so.
 
 **1. Command line**
 
+The command below is going to send a `SIGTERM` message to the server.
+
     $ php app/console foreman:processor:stop
     A `SIGTERM` has been sent to the Foreman Processor.
-     
-The command below is going to send a `SIGTERM` message to the server.
  
 **2. Http request**
  
