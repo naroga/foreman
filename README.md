@@ -33,4 +33,4 @@ To get started on using this project, proceed to the [documentation](/src/AppBun
 License
 -------
 
-This project is released under the MIT License. For more information, see the [LICENSE file](/LICENSE).
+This project is released under the MIT License. For more information, see the [LICENSE](/LICENSE) file.
