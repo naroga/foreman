@@ -11,8 +11,14 @@ It's easy to configure and has a built-in queue priority schema.
 Project requisites
 ------------------
 
-This project is only officially supported on UNIX and OSX distributions. To run this on a Windows 
-platform, you will need [CYGWIN](https://www.cygwin.com/).
+This project is now supported in all major OS': UNIX, OSX and Windows.
+
+It requires PHP 5.5+, php5-curl, php5-json, php-xml.
+
+See the [Symfony Requirements](http://symfony.com/doc/current/reference/requirements.html)
+for more specific and in-depth requirements.
+
+You can check if your system is ready to use by running `php app/check.php`.
 
 Installation
 ------------
