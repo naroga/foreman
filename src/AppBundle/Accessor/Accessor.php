@@ -62,4 +62,23 @@ class Accessor
         }
         return true;
     }
+
+    /**
+     * Checks the server status.
+     *
+     * @return array
+     */
+    public function status()
+    {
+        if (!$this->ping()) {
+            return false;
+        } else {
+            $response = $this->client->get('/status');
+            return $this->serializer->deserialize(
+                $response->getBody(),
+                'array',
+                'json'
+            );
+        }
+    }
 }

@@ -32,4 +32,17 @@ class ProcessorController extends Controller
     {
         return new JsonResponse(['success' => true, 'message' => 'pong']);
     }
+
+    /**
+     * Gets the server status.
+     *
+     * @return JsonResponse
+     */
+    public function statusAction()
+    {
+        return new JsonResponse([
+            'success' => true,
+            'pid' => getmypid()
+        ]);
+    }
 }

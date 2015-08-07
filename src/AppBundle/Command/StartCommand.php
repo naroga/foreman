@@ -34,17 +34,36 @@ class StartCommand extends ContainerAwareCommand
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output, $retried = false)
     {
+        if ($this->getContainer()->get('foreman.accessor')->ping()) {
+            $output->writeln('<error>The Foreman Processor server is already running.');
+            return;
+        }
+
         if ($input->getOption('daemon')) {
             $phpPath = (new PhpExecutableFinder())->find();
             $process = new Process(
                 $phpPath . ' app/console foreman:processor:start' . (($input->getOption('verbose') ? ' -v' : ''))
             );
             $process->setTimeout(0);
-            $process->start();
 
-            if ($this->getContainer()->get('foreman.accessor')->ping()) {
+            $output->writeln('<info>Starting daemon server...');
+
+            $process->start();
+            $accessor = $this->getContainer()->get('foreman.accessor');
+            $start = time();
+
+            $interval = $this->getContainer()->getParameter('foreman.processor')['interval'];
+
+            //When we try to ping the server the first time, it almost always fails.
+            //The server isn't started yet by the time we get here, so we wait.
+            //Timeout = 3 seconds. Should be enough for all servers.
+            while (!$accessor->ping() && (time() - $start < 3)) {
+                sleep($interval);
+            }
+
+            if ($accessor->ping()) {
                 //WTF, I don't know why but subtracting 2 is needed to display the correct result.
                 $output->writeln(
                     '<info>The server has been started successfully with PID ' . ($process->getPid() - 2) . '</info>'
@@ -52,7 +71,8 @@ class StartCommand extends ContainerAwareCommand
             } else {
                 $output->writeln('<error>The server could not be started at this moment.</error>');
                 $output->writeln(
-                    'Please check if the server port (' . $this->getContainer()->getParameter('foreman.processor.port')
+                    'Please check if the server port (' .
+                    $this->getContainer()->getParameter('foreman.processor.port')
                     . ') is available.'
                 );
                 $output->writeln(
