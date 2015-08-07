@@ -66,7 +66,7 @@ class StartCommand extends ContainerAwareCommand
             if ($accessor->ping()) {
                 $status = $accessor->status();
                 $output->writeln(
-                    '<info>The server has been started successfully with PID ' . $status['pid'] . '</info>'
+                    '<info>The server was started successfully with PID ' . $status['pid'] . '</info>'
                 );
             } else {
                 $output->writeln('<error>The server could not be started at this moment.</error>');
