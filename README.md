@@ -28,18 +28,18 @@ request to use the default configuration, which should run just fine.
 Configuration
 -------------
 
-**1. Setting up the servers.**
+**1. Setting up the servers**
 
-There are two servers in this project that should be running at all times:
+There are two servers in this project that should be running at all times
 
-**1.1. The Daemon Service.**
+**1.1. The Daemon Service**
 
 The demon is started from the command line, and if you installed this application using
 `composer` (see the topic above), it should be good to go. Just check if your firewall
 isn't blocking connections in the specified port (defaults to `3440`). If you wish to make
 changes to the host/port, you should edit `app/config/parameters.yml`.
 
-**1.2. The http server.**
+**1.2. The http server**
 
 The http server runs like you would expect from a PHP project. Just set up a virtual host pointing
 to the /web/ folder. If you wish to troubleshoot or to get more information on setting up the virtual host,
@@ -47,7 +47,9 @@ you should refer to the
 [Symfony WebServer configuration](http://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html) 
 documentation.
 
-Naroga/Foreman comes preconfigured, so you can skip the rest of this section. If you wish to 
+**2. Additional configuration**
+
+Naroga/Foreman comes preconfigured, so you can skip this section. If you wish to 
 tweak the configuration to improve responsiveness, resource usage or to change the default behaviour, proceed to the 
 [configuration reference](/src/AppBundle/Resources/doc/configuration.md).
 
