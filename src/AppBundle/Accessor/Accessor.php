@@ -33,6 +33,16 @@ class Accessor
     }
 
     /**
+     * Gets the base client.
+     *
+     * @return Client
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
      * Sends the SIGTERM to the current Foreman Processor.
      *
      * @return bool
