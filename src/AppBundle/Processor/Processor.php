@@ -156,7 +156,6 @@ class Processor
         $sResponse = $this->kernel->handle($sRequest);
         $response->writeHead($sResponse->getStatusCode());
         $response->end($sResponse->getContent());
-        
     }
 
     /**
@@ -252,7 +251,7 @@ class Processor
                 return $item->getName() == $name;
             }))[0];
 
-            if (!$worker->isRunning()) {
+            if (!$worker->isRunning() && $worker->isSuccessful()) {
                 $this->eventDispatcher->dispatch(
                     'foreman.process.finished',
                     new ProcessFinishedEvent($processName)
@@ -260,7 +259,15 @@ class Processor
                 unset($worker);
                 $this->workers[$i] = null;
                 unset($this->processList[$processName]);
-            } else {
+            } elseif (!$worker->isRunning && !$worker->isSuccessful()) {
+                $this->eventDispatcher->dispatch(
+                    'foreman.process.failed',
+                    new ProcessFailedEvent($processName, 'FAILED')
+                );
+                unset($worker);
+                $this->workers[$i] = null;
+                unset($this->processList[$processName]);
+            } elseif ($worker->isRunning()) {
                 try {
                     $worker->checkTimeout();
                 } catch (ProcessTimedOutException $e) {
