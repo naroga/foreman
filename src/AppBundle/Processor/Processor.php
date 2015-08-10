@@ -144,7 +144,7 @@ class Processor
             'application/x-www-form-urlencoded';
 
         if (strtolower($contentType) == 'application/x-www-form-urlencoded') {
-            $requestData[] = $request->getPost();
+            $requestData[] = http_build_query($request->getPost());
         } else {
             $requestData[] = $request->getBody();
         }
@@ -156,9 +156,7 @@ class Processor
         $sResponse = $this->kernel->handle($sRequest);
         $response->writeHead($sResponse->getStatusCode());
         $response->end($sResponse->getContent());
-
-
-
+        
     }
 
     /**
@@ -229,7 +227,7 @@ class Processor
             new ProcessAddedEvent($processName)
         );
 
-        return true;
+        return $processName;
     }
 
     /**
@@ -266,7 +264,6 @@ class Processor
                 try {
                     $worker->checkTimeout();
                 } catch (ProcessTimedOutException $e) {
-                    $processName = array_search($worker, $this->processList);
                     $this->eventDispatcher->dispatch(
                         'foreman.process.failed',
                         new ProcessFailedEvent($processName, 'TIMEOUT')
@@ -305,7 +302,7 @@ class Processor
                 'properties' => ['name']
             ],
             'foreman.process.failed' => [
-                'message' => '<error>Process %s failed. Reason: %s</error>',
+                'message' => '<error>Process %s failed. Reason: %s.</error>',
                 'properties' => ['name', 'reason']
             ]
         ];

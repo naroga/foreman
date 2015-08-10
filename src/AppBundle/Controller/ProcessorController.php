@@ -65,10 +65,10 @@ class ProcessorController extends Controller
         $process = ProcessFactory::create($processType, $request);
         $process->setPriority($priority);
 
-        $this->get('foreman.processor')->addProcess($process);
+        $name = $this->get('foreman.processor')->addProcess($process);
 
         return new JsonResponse(
-            ['success' => true, 'message' => 'Process added to the queue.']
+            ['success' => true, 'message' => 'Process added to the queue.', "name" => $name]
         );
     }
 

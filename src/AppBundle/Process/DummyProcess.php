@@ -20,8 +20,8 @@ class DummyProcess implements ProcessInterface
     {
         sleep(rand(1, 3));
         //5% timeout chance.
-        if (rand(1, 20) == 20) {
-            sleep(rand(60));
+        if (rand(1, 25) == 25) {
+            sleep(60);
         }
     }
 
