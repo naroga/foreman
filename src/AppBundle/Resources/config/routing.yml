@@ -13,7 +13,8 @@ foreman.processor.signal.status:
 foreman.processor.signal.addprocess:
     path:     /add-process
     defaults: { _controller: AppBundle:Processor:addProcess, _format: json }
+    methods: [POST]
 
-foreman.processor.signal.dispatch:
-    path:     /dispatch
-    defaults: { _controller: AppBundle:Processor:dispatch, _format: json }
+foreman.processor.signal.getprocess:
+    path:     /get-process/{name}
+    defaults: { _controller: AppBundle:Processor:getProcess, _format: json }

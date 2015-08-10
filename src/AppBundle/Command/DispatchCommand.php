@@ -33,6 +33,9 @@ class DispatchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getContainer()->get('foreman.processor')->dispatch($input->getArgument('process-name'));
+        $process =
+            $this->getContainer()->get('foreman.accessor')->getProcess($input->getArgument('process-name'));
+
+        $process->execute();
     }
 }

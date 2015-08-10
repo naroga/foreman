@@ -2,6 +2,7 @@
 
 namespace AppBundle\Accessor;
 
+use AppBundle\Process\ProcessInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use JMS\Serializer\Serializer;
@@ -56,7 +57,7 @@ class Accessor
     public function ping()
     {
         try {
-            $response = $this->client->get('/ping');
+            $this->client->get('/ping');
         } catch (GuzzleException $e) {
             return false;
         }
@@ -79,6 +80,29 @@ class Accessor
                 'array',
                 'json'
             );
+        }
+    }
+
+    /**
+     * Gets a process object from the server
+     *
+     * @param string $name The process name
+     * @return ProcessInterface The process.
+     */
+    public function getProcess($name)
+    {
+        if (!$this->ping()) {
+            return null;
+        } else {
+            $response = $this->client->get('/get-process/' . $name);
+            $data = $this->serializer->deserialize(
+                $response->getBody(),
+                'array',
+                'json'
+            );
+
+            $process = unserialize($data['process']);
+            return $process;
         }
     }
 }

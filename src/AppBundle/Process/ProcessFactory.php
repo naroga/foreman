@@ -16,7 +16,7 @@ class ProcessFactory
      * @param Request $data Additional data.
      * @return DummyProcess
      */
-    public static function create($type, Request $data = [])
+    public static function create($type, Request $data = null)
     {
         switch ($type) {
             case 'dummy':

@@ -2,10 +2,14 @@
 
 namespace AppBundle\Processor;
 
+use AppBundle\Event\ProcessAddedEvent;
+use AppBundle\Event\ProcessFailedEvent;
+use AppBundle\Event\ProcessFinishedEvent;
 use AppBundle\Process\ProcessInterface;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
 use React\Socket\Server;
+use React\Stream\BufferedSink;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +58,7 @@ class Processor
     protected $queue;
 
     /** @var array */
-    protected $processList;
+    protected $processList = [];
 
     /** @var \SplFixedArray */
     protected $workers;
@@ -121,21 +125,40 @@ class Processor
      * Manages a request, made to the Http server.
      *
      * @param \React\Http\Request $request
-     * @param $response
+     * @param \React\Http\Response $response
      */
     public function manageRequest($request, $response)
     {
-        //Creates the Symfony Request from the React Request.
-        $sRequest = Request::create(
+
+        $requestData = [
             $request->getHeaders()['Host'] . $request->getPath(),
             $request->getMethod(),
-            $request->getQuery()
-        );
+            array_merge($request->getQuery(), $request->getPost()),
+            [],
+            [],
+            []
+        ];
+
+        $contentType = isset($request->getHeaders()['Content-Type']) ?
+            $request->getHeaders()['Content-Type'] :
+            'application/x-www-form-urlencoded';
+
+        if (strtolower($contentType) == 'application/x-www-form-urlencoded') {
+            $requestData[] = $request->getPost();
+        } else {
+            $requestData[] = $request->getBody();
+        }
+
+        //Creates the Symfony Request from the React Request.
+        $sRequest = Request::create(...$requestData);
 
         /** @var Response $sResponse */
         $sResponse = $this->kernel->handle($sRequest);
-        $response->writeHead($sResponse->getStatusCode(), ['Content-type' => 'application/json']);
+        $response->writeHead($sResponse->getStatusCode());
         $response->end($sResponse->getContent());
+
+
+
     }
 
     /**
@@ -197,8 +220,14 @@ class Processor
             $processName = substr(str_shuffle(md5(microtime())), 0, 10);
         }
 
+        $process->setName($processName);
         $this->processList[$processName] = $process;
         $this->queue->insert($processName, $process->getPriority());
+
+        $this->eventDispatcher->dispatch(
+            'foreman.process.added',
+            new ProcessAddedEvent($processName)
+        );
 
         return true;
     }
@@ -212,28 +241,53 @@ class Processor
          * @var int $index
          * @var Process $worker
          */
-        foreach ($this->workers as $index => &$worker) {
+        for ($i = 0; $i < count($this->workers); $i++) {
+            $worker = $this->workers[$i];
+
+            if (!$worker) {
+                continue;
+            }
+
+            $processName = array_keys(array_filter($this->processList, function ($item) use ($worker) {
+                $exploded = (explode(" ", $worker->getCommandLine()));
+                $name = end($exploded);
+                return $item->getName() == $name;
+            }))[0];
+
             if (!$worker->isRunning()) {
+                $this->eventDispatcher->dispatch(
+                    'foreman.process.finished',
+                    new ProcessFinishedEvent($processName)
+                );
                 unset($worker);
+                $this->workers[$i] = null;
+                unset($this->processList[$processName]);
             } else {
                 try {
                     $worker->checkTimeout();
                 } catch (ProcessTimedOutException $e) {
+                    $processName = array_search($worker, $this->processList);
+                    $this->eventDispatcher->dispatch(
+                        'foreman.process.failed',
+                        new ProcessFailedEvent($processName, 'TIMEOUT')
+                    );
                     unset($worker);
+                    $this->workers[$i] = null;
+                    unset($this->processList[$processName]);
                 }
             }
         }
     }
 
     /**
-     * Dispatches a process.
+     * Gets a process from the list, by name
      *
-     * @param string $name The process identifier (name).
+     * @param string $name
+     * @return ProcessInterface
      */
-    public function dispatch($name)
+    public function getProcess($name)
     {
-        $process = $this->processList[$name];
-        $process->execute();
+        return $this->processList[$name];
     }
 
     /**
@@ -241,14 +295,13 @@ class Processor
      */
     protected function registerListeners()
     {
-        $processor = $this;
         $printEvents = [
             'foreman.process.added' => [
                 'message' => '<info>Process %s was added to the queue.</info>',
                 'properties' => ['name']
             ],
             'foreman.process.finished' => [
-                'message' => '<info>Process %s has finished running.</info>',
+                'message' => '<info>Process %s has ended successfully.</info>',
                 'properties' => ['name']
             ],
             'foreman.process.failed' => [
@@ -267,14 +320,8 @@ class Processor
                 foreach ($properties as $property) {
                     $values[] = $accessor->getValue($event, $property);
                 }
-                $output->writeln(sprintf($messageData['message'], $values));
+                $output->writeln(sprintf($messageData['message'], ...$values));
             });
         }
-
-    }
-
-    protected function printMessage($message)
-    {
-        $this->output->writeln($message);
     }
 }

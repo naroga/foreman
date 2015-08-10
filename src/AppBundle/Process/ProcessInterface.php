@@ -22,6 +22,20 @@ interface ProcessInterface
     public function configure(array $data = []);
 
     /**
+     * Sets the process identifier
+     *
+     * @param string $name
+     */
+    public function setName($name);
+
+    /**
+     * Gets the process identifier
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
      * Sets the process priority
      *
      * @param int $priority

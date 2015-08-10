@@ -82,6 +82,7 @@ class StartCommand extends ContainerAwareCommand
             }
 
         } else {
+            $output->writeln('<info>Starting the Foreman Processor...</info>');
             $this->getContainer()->get('foreman.processor')->start($output, $input->getOption('verbose'));
         }
     }

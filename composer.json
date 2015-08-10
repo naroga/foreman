@@ -28,7 +28,7 @@
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
-        "react/react": "^0.4.2",
+        "react/http": "dev-master",
         "guzzlehttp/guzzle": "~6.0",
         "jms/serializer-bundle": "^1.0"
     },

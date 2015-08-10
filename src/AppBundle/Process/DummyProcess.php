@@ -11,6 +11,8 @@ class DummyProcess implements ProcessInterface
 
     protected $priority = 3;
 
+    protected $name = null;
+
     /**
      * Executes the process.
      */
@@ -47,5 +49,23 @@ class DummyProcess implements ProcessInterface
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * Sets the process identifier
+     *
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * Gets the process identifier
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

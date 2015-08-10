@@ -57,6 +57,7 @@ class ProcessorController extends Controller
      */
     public function addProcessAction(Request $request)
     {
+
         $priority = $request->get('priority') | 3; //3 is the default priority.
         $processType = $request->get('type');
 
@@ -72,16 +73,22 @@ class ProcessorController extends Controller
     }
 
     /**
-     * Dispatches a process
+     * Gets the process by name
      *
-     * @param Request $request
+     * @param string $name
      * @return JsonResponse
      */
-    public function dispatchProcessAction(Request $request)
+    public function getProcessAction($name)
     {
-        $processName = $request->get('name');
-        $this->get('foreman.processor')->dispatch($processName);
+        $process = $this->get('foreman.processor')->getProcess($name);
 
-        return JsonResponse(['success' => true]);
+        $serializer = $this->get('jms_serializer');
+
+        return new JsonResponse(
+            [
+                'success' => true,
+                'process' => serialize($process)
+            ]
+        );
     }
 }
