@@ -259,7 +259,7 @@ class Processor
                 unset($worker);
                 $this->workers[$i] = null;
                 unset($this->processList[$processName]);
-            } elseif (!$worker->isRunning && !$worker->isSuccessful()) {
+            } elseif (!$worker->isRunning() && !$worker->isSuccessful()) {
                 $this->eventDispatcher->dispatch(
                     'foreman.process.failed',
                     new ProcessFailedEvent($processName, 'FAILED')
