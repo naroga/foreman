@@ -9,6 +9,20 @@ able to add processes to the queue.
 Starting the server
 -------------------
 
+**INFORMATION:**
+
+If you are already familiar with the Symfony Console, you should know that the default
+environment has been switched from 'dev' to 'prod' in this project. This means that
+by running the commands in this documentation, you are running the kernel in 'production'
+mode. To use the default 'development' environment, append `--env=dev` to the commands.
+Also, if you make changes to the code, you will need to clear the production cache.
+
+    php app/console cache:clear
+    
+No need to use `--env=prod`, as this is the default environment.
+
+---
+
 The server should be started from the command line, from the Symfony Console application. Follow the example below:
 
     php app/console foreman:processor:start
