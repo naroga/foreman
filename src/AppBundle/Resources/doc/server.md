@@ -6,9 +6,6 @@ responsible for managing your workers, starting queued processes, killing timed 
 notifying your application that a specific process has finished. If it's not running, you won't be
 able to add processes to the queue.
 
-Starting the server
--------------------
-
 **INFORMATION:**
 
 If you are already familiar with the Symfony Console, you should know that the default
@@ -19,9 +16,10 @@ Also, if you make changes to the code, you will need to clear the production cac
 
     php app/console cache:clear
     
-No need to use `--env=prod`, as this is the default environment.
+No need to use `--env=prod`, as this is the default environment. 
 
----
+Starting the server
+-------------------
 
 The server should be started from the command line, from the Symfony Console application. Follow the example below:
 
