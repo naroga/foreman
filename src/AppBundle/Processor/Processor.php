@@ -5,6 +5,7 @@ namespace AppBundle\Processor;
 use AppBundle\Event\ProcessAddedEvent;
 use AppBundle\Event\ProcessFailedEvent;
 use AppBundle\Event\ProcessFinishedEvent;
+use AppBundle\Event\ProcessStartedEvent;
 use AppBundle\Process\ProcessInterface;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
@@ -179,6 +180,10 @@ class Processor
                 );
                 $this->workers[$index]->setTimeout($this->timeout);
                 $this->workers[$index]->start();
+                $this->eventDispatcher->dispatch(
+                    'foreman.process.started',
+                    new ProcessStartedEvent($processName)
+                );
             }
         }
     }
@@ -267,6 +272,9 @@ class Processor
                     'foreman.process.failed',
                     new ProcessFailedEvent($processName, 'FAILED')
                 );
+                if (!empty($worker->getOutput())) {
+                    $this->output->writeln('<error>Output: ' . $worker->getOutput() . '</error>');
+                }
                 unset($worker);
                 $this->workers[$i] = null;
                 unset($this->processList[$processName]);
@@ -314,6 +322,10 @@ class Processor
             'foreman.process.failed' => [
                 'message' => '<error>Process %s failed. Reason: %s.</error>',
                 'properties' => ['name', 'reason']
+            ],
+            'foreman.process.started' => [
+                'message' => '<info>Process %s has started.</info>',
+                'properties' => ['name']
             ]
         ];
 

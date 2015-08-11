@@ -1,7 +1,7 @@
 <?php
 
 namespace AppBundle\Process;
-use Symfony\Component\Process\Process;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Interface ProcessInterface
@@ -17,9 +17,9 @@ interface ProcessInterface
     /**
      * Configures the executor.
      *
-     * @param array $data
+     * @param Request $data
      */
-    public function configure(array $data = []);
+    public function configure(Request $data = null);
 
     /**
      * Sets the process identifier

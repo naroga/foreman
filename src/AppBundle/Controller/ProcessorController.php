@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Exception\InvalidRequestException;
 use AppBundle\Process\ProcessFactory;
 use AppBundle\Process\ProcessInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -54,6 +55,7 @@ class ProcessorController extends Controller
      *
      * @param Request $request
      * @return JsonResponse The Response
+     * @throws InvalidRequestException
      */
     public function addProcessAction(Request $request)
     {
@@ -61,9 +63,20 @@ class ProcessorController extends Controller
         $priority = $request->get('priority') | 3; //3 is the default priority.
         $processType = $request->get('type');
 
+        if (!$processType) {
+            return new JsonResponse(
+                [
+                    'success' => false,
+                    'message' => "'addProcessAction' requires a 'type' variable from the POST Request. "
+                ],
+                500
+            );
+        }
+
         /** @var ProcessInterface $process */
         $process = ProcessFactory::create($processType, $request);
         $process->setPriority($priority);
+        $process->configure($request);
 
         $name = $this->get('foreman.processor')->addProcess($process);
 

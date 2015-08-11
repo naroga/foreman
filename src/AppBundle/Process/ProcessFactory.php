@@ -21,6 +21,8 @@ class ProcessFactory
         switch ($type) {
             case 'dummy':
                 return new DummyProcess();
+            case 'request':
+                return new RequestProcess();
         }
     }
 }

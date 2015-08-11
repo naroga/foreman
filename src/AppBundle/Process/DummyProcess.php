@@ -2,6 +2,8 @@
 
 namespace AppBundle\Process;
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Class DummyProcess
  * @package AppBundle\Process
@@ -9,34 +11,34 @@ namespace AppBundle\Process;
 class DummyProcess implements ProcessInterface
 {
 
+    /** @var int */
     protected $priority = 3;
 
+    /** @var string */
     protected $name = null;
 
     /**
-     * Executes the process.
+     * @inheritDoc
      */
     public function execute()
     {
         sleep(rand(1, 3));
-        //5% timeout chance.
+        //4% timeout chance.
         if (rand(1, 25) == 25) {
             sleep(60);
         }
     }
 
     /**
-     * Configures the executor.
-     *
-     * @param array $data
+     * @inheritDoc
      */
-    public function configure(array $data = [])
+    public function configure(Request $data = null)
     {
-        // TODO: Implement configure() method.
+
     }
 
     /**
-     * @param int $priority
+     * @inheritDoc
      */
     public function setPriority($priority)
     {
@@ -44,7 +46,7 @@ class DummyProcess implements ProcessInterface
     }
 
     /**
-     * @return int The process priority.
+     * @inheritDoc
      */
     public function getPriority()
     {
@@ -52,9 +54,7 @@ class DummyProcess implements ProcessInterface
     }
 
     /**
-     * Sets the process identifier
-     *
-     * @param string $name
+     * @inheritDoc
      */
     public function setName($name)
     {
@@ -62,7 +62,7 @@ class DummyProcess implements ProcessInterface
     }
 
     /**
-     * Gets the process identifier
+     * @inheritDoc
      */
     public function getName()
     {

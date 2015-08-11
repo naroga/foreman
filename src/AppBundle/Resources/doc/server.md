@@ -75,3 +75,5 @@ URI, and it should work.
 
     $ curl -X GET http://127.0.0.1:3440/stop
     {"success":true,"message":"SIGTERM Received"}
+    
+Just keep in mind this host is protected and will only allow requests made from the same machine (127.0.0.1).
