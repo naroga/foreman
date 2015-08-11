@@ -35,7 +35,9 @@ class StubCommand extends ContainerAwareCommand
         $client = $this->getContainer()->get('foreman.accessor')->getClient();
 
         for ($i = 0; $i < $input->getArgument('number'); $i++) {
-            $output->writeln('Stubbing <info>' . ($i + 1) . '</info> of <info>' . $input->getArgument('number') . '</info>');
+            $output->writeln(
+                'Stubbing <info>' . ($i + 1) . '</info> of <info>' . $input->getArgument('number') . '</info>'
+            );
             $client->post('/add-process', [
                 'form_params' => [
                     'type' => 'dummy'

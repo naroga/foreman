@@ -173,7 +173,10 @@ class Processor
         foreach ($this->workers as $index => $worker) {
             if (!$worker && count($this->queue) > 0) {
                 $processName = $this->queue->extract();
-                $this->workers[$index] = new Process($this->phpPath . ' app/console foreman:dispatch ' . $processName);
+                $this->workers[$index] = new Process(
+                    $this->phpPath . ' app/console foreman:dispatch ' . $processName .
+                    ' --env=' . $this->kernel->getEnvironment()
+                );
                 $this->workers[$index]->setTimeout($this->timeout);
                 $this->workers[$index]->start();
             }
@@ -247,7 +250,7 @@ class Processor
 
             $processName = array_keys(array_filter($this->processList, function ($item) use ($worker) {
                 $exploded = (explode(" ", $worker->getCommandLine()));
-                $name = end($exploded);
+                $name = $exploded[count($exploded) - 2];
                 return $item->getName() == $name;
             }))[0];
 
