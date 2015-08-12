@@ -25,7 +25,7 @@ Installation
 
 Use [Composer](https://getcomposer.org) to install this project and all its dependencies:
 
-    composer create-project naroga/foreman -s dev
+    composer create-project naroga/foreman
     
 The installation wizard will ask you for a few parameters, such as a hostname and a port for the 
 daemon service. You can change these, but if you wish, you can just press <ENTER> at each
