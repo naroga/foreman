@@ -150,8 +150,6 @@ class Processor
             $requestData[] = $request->getBody();
         }
 
-        echo $contentType;
-
         //Creates the Symfony Request from the React Request.
         $sRequest = Request::create(...$requestData);
 
