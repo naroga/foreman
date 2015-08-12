@@ -23,6 +23,8 @@ class ProcessFactory
                 return new DummyProcess();
             case 'request':
                 return new RequestProcess();
+            case 'php':
+                return new PhpProcess();
         }
     }
 }
