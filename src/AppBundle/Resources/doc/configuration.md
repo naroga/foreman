@@ -63,4 +63,4 @@ Time, in seconds, to wait before declaring a process timed out.
 
 ---
 
-Proceed to the [Foreman:Processor Server usage reference](server.md).
+Next step: [Foreman:Processor Server usage reference](server.md).

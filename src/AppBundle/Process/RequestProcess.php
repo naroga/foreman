@@ -71,7 +71,7 @@ class RequestProcess implements ProcessInterface
         $this->method = $data->get('method');
         $this->payload = $data->get('payload');
         $this->query = $data->get('query');
-        $this->headers = $data->get('headers') ? $data->get('headers') : [];
+        $this->headers = $data->get('headers') ? unserialize($data->get('headers')) : [];
     }
 
     /**

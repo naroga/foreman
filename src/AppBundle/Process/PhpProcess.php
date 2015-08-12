@@ -39,6 +39,7 @@ class PhpProcess implements ProcessInterface
         $process->setTimeout(0);
         $process->run();
         echo $process->getOutput();
+        $filesystem->remove('app/cache/tmp/' . $filename);
     }
 
     /**

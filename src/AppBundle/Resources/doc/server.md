@@ -77,3 +77,5 @@ URI, and it should work.
     {"success":true,"message":"SIGTERM Received"}
     
 Just keep in mind this host is protected and will only allow requests made from the same machine (127.0.0.1).
+
+Previous: [Configuration reference](configuration.md); Next step: [Spawning processes](process.md)
