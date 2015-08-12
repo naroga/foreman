@@ -30,7 +30,7 @@ While using Guzzle, you can also specify a resource:
     ];
     
 If your script throws an uncaught exception or triggers an error, your process will be marked as `FAILED`.
-Otherwise, there is no need to print anything. If it exists with no errors it will be marked as `SUCCESS`.
+Otherwise, there is no need to print anything. If it exits with no errors it will be marked as `SUCCESS`.
 
 DISCLAIMER
 ----------
