@@ -19,8 +19,8 @@ The URI above always requires at least two parameters: `type` and `priority`.
 Choosing your process type
 --------------------------
 
-You can see in the previous snipped, we passed `dummy` as the process `type`. The `dummy` type
-is an internal type that does nothing. It spawns a process that idles for a random amount between
+You can see in the previous snippet, we passed `dummy` as the process `type`. The `dummy` type
+is an internal type that does nothing. It spawns a process that idles for a random amount of time between
 1 and 3 seconds before exiting successfully. It also has a 4% chance (random) to timeout. So, if your
 goal is to only test the queue, you can spawn one (or many) dummy processes with the script above.
 
