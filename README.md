@@ -28,7 +28,7 @@ Use [Composer](https://getcomposer.org) to install this project and all its depe
     composer create-project naroga/foreman
     
 The installation wizard will ask you for a few parameters, such as a hostname and a port for the 
-daemon service. You can change these, but if you wish, you can just press <ENTER> at each
+daemon service. You can change these, but if you wish, you can just press ENTER at each
 request to use the default configuration, which should run just fine.
     
 Configuration

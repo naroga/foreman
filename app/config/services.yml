@@ -8,12 +8,13 @@ parameters:
         ###################################################################
 
         interval: 0.5
-        workers: 15
+        workers: 5
         timeout: 30
 
         ###################################################################
         # Do not change the configuration below this point.               #
         # These are references to the values at app/config/parameters.yml #
+        # If you need to change these, change @app/config/parameters.yml  #
         ###################################################################
 
         host: %foreman.processor.host%
