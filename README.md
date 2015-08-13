@@ -1,9 +1,8 @@
 Foreman
 =======
 
-Naroga/Foreman is a worker manager. It allows you to asynchronously spawn parallel processes
-without relying on `pthreads`, without spawning *too many* processes at once (and thus consuming
-all your resources). It's an easy way to enqueue new processes, sit back and
+Naroga/Foreman is a worker manager. It allows you to asynchronously spawn processes without spawning *too many* 
+processes at once (and thus consuming all your resources). It's an easy way to enqueue new processes, sit back and
 wait to be notified when the process is done.
 
 It's easy to configure and has a built-in queue priority schema.
