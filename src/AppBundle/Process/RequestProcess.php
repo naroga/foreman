@@ -1,7 +1,9 @@
 <?php
 
 namespace AppBundle\Process;
+
 use AppBundle\Exception\InvalidRequestException;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\HttpFoundation\Request;
 use GuzzleHttp\Client;
 
@@ -43,15 +45,21 @@ class RequestProcess implements ProcessInterface
         $post = [];
         parse_str($this->query, $post);
 
-        $client->request(
-            $this->method,
-            $this->url,
-            [
-                'headers' => $this->headers,
-                'body' => $this->payload,
-                'form_params' => $post
-            ]
-        );
+        try {
+
+            $client->request(
+                $this->method,
+                $this->url,
+                [
+                    'headers' => $this->headers,
+                    'body' => $this->payload,
+                    'form_params' => $post
+                ]
+            );
+        } catch (RequestException $e) {
+            echo $e->getResponse()->getBody()->getContents();
+            exit(1);
+        }
     }
 
     /**
@@ -106,4 +114,8 @@ class RequestProcess implements ProcessInterface
         return $this->priority;
     }
 
+    public function __toString()
+    {
+        return 'HTTP ' . $this->method . ' @' . $this->url;
+    }
 }

@@ -81,4 +81,9 @@ class PhpProcess implements ProcessInterface
     {
         return $this->priority;
     }
+
+    public function __toString()
+    {
+        return "PHP Process ({$this->name})";
+    }
 }

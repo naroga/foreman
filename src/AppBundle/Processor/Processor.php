@@ -229,6 +229,10 @@ class Processor
         $this->processList[$processName] = $process;
         $this->queue->insert($processName, $process->getPriority());
 
+        if ($this->verbose) {
+            $this->output->writeln($process->__toString());
+        }
+
         $this->eventDispatcher->dispatch(
             'foreman.process.added',
             new ProcessAddedEvent($processName)
@@ -262,7 +266,7 @@ class Processor
             if (!$worker->isRunning() && $worker->isSuccessful()) {
                 $this->eventDispatcher->dispatch(
                     'foreman.process.finished',
-                    new ProcessFinishedEvent($processName)
+                    new ProcessFinishedEvent($processName, ($this->verbose ? $worker->getOutput() : ''))
                 );
                 unset($worker);
                 $this->workers[$i] = null;
@@ -270,7 +274,11 @@ class Processor
             } elseif (!$worker->isRunning() && !$worker->isSuccessful()) {
                 $this->eventDispatcher->dispatch(
                     'foreman.process.failed',
-                    new ProcessFailedEvent($processName, 'FAILED')
+                    new ProcessFailedEvent(
+                        $processName,
+                        'FAILED',
+                        $worker->getOutput()
+                    )
                 );
                 if (!empty($worker->getOutput())) {
                     $this->output->writeln('<error>Output: ' . $worker->getOutput() . '</error>');
@@ -316,12 +324,13 @@ class Processor
                 'properties' => ['name']
             ],
             'foreman.process.finished' => [
-                'message' => '<info>Process %s has ended successfully.</info>',
-                'properties' => ['name']
+                'message' =>
+                    '<info>Process %s has ended successfully.' . "\n%s</info>",
+                'properties' => ['name', 'output']
             ],
             'foreman.process.failed' => [
-                'message' => '<error>Process %s failed. Reason: %s.</error>',
-                'properties' => ['name', 'reason']
+                'message' => '<error>>Process %s failed. Reason: %s.' . "\n%s</error>",
+                'properties' => ['name', 'reason', 'output']
             ],
             'foreman.process.started' => [
                 'message' => '<info>Process %s has started.</info>',

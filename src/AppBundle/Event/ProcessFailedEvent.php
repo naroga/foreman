@@ -21,15 +21,22 @@ class ProcessFailedEvent extends Event
     protected $reason;
 
     /**
+     * @var string
+     */
+    protected $output;
+
+    /**
      * Class constructor
      *
      * @param string $name
      * @param string $reason
+     * @param string $output
      */
-    public function __construct($name, $reason)
+    public function __construct($name, $reason, $output = '')
     {
         $this->name = $name;
         $this->reason = $reason;
+        $this->output = $output;
     }
 
     /**
@@ -46,5 +53,13 @@ class ProcessFailedEvent extends Event
     public function getReason()
     {
         return $this->reason;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 }

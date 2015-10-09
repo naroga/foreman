@@ -46,4 +46,6 @@ interface ProcessInterface
      * @return int The process priority.
      */
     public function getPriority();
+
+    public function __toString();
 }
