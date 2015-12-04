@@ -268,6 +268,9 @@ class Processor
                     'foreman.process.finished',
                     new ProcessFinishedEvent($processName, ($this->verbose ? $worker->getOutput() : ''))
                 );
+                if ($this->verbose) {
+                    $this->output->writeln('Output: ' . $worker->getOutput());
+                }
                 unset($worker);
                 $this->workers[$i] = null;
                 unset($this->processList[$processName]);

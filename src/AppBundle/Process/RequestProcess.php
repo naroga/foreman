@@ -47,7 +47,7 @@ class RequestProcess implements ProcessInterface
 
         try {
 
-            $client->request(
+            $response = $client->request(
                 $this->method,
                 $this->url,
                 [
@@ -56,6 +56,9 @@ class RequestProcess implements ProcessInterface
                     'form_params' => $post
                 ]
             );
+
+            echo $response->getBody()->getContents();
+
         } catch (RequestException $e) {
             echo $e->getResponse()->getBody()->getContents();
             exit(1);
