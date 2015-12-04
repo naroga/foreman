@@ -12,7 +12,7 @@ Project requisites
 
 This project is now supported in all major OS': UNIX, OSX and Windows.
 
-It requires PHP 5.5+, php5-curl, php5-json, php-xml.
+It requires PHP 5.5+ (or 7.0+), curl, json, and xml extensions.
 
 See the [Symfony Requirements](http://symfony.com/doc/current/reference/requirements.html)
 for more specific and in-depth requirements.
